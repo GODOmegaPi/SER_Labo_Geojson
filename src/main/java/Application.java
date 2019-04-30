@@ -1,13 +1,39 @@
 import java.io.*;
 
+import org.json.simple.parser.JSONParser;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 public class Application {
-    String FILE = "data/countries.geojson";
+    static final String FILE = "data/countries.geojson";
 
-    public static void main(String[] args)
-    {
+    public static void main(String[] args) {
+        JSONParser jsonParser = new JSONParser();
 
+        try (FileReader reader = new FileReader(FILE)) {
+            Object obj = jsonParser.parse(reader);
+
+            JSONObject geojson = (JSONObject) obj;
+
+            JSONArray features = (JSONArray) geojson.get("features");
+
+            features.forEach(feature->parseFeaturesArray((JSONObject)feature));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void parseFeaturesArray(JSONObject feature) {
+        JSONObject properties = (JSONObject) feature.get("properties");
+        JSONObject geometry = (JSONObject) feature.get("geometry");
+
+        System.out.println("(" + properties.get("ISO_A3") + ") " + properties.get("ADMIN"));
+        System.out.println(geometry.get("type"));
+        if(geometry.get("type") == "Polygon"){
+            System.out.println("penis " + ((JSONArray)geometry.get("coordinates")).size());
+        } else {
+
+        }
     }
 }
