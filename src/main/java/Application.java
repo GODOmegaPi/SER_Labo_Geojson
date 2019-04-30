@@ -29,9 +29,9 @@ public class Application {
         JSONObject geometry = (JSONObject) feature.get("geometry");
 
         System.out.println("(" + properties.get("ISO_A3") + ") " + properties.get("ADMIN"));
-        System.out.println(geometry.get("type"));
-        if(geometry.get("type") == "Polygon"){
-            System.out.println("penis " + ((JSONArray)geometry.get("coordinates")).size());
+        if(geometry.get("type").equals("Polygon")){
+            JSONArray coordinates = (JSONArray)geometry.get("coordinates");
+            System.out.println("\t  - " + ((JSONArray)coordinates.get(0)).size() + " coordinates");
         } else {
 
         }
