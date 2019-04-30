@@ -33,7 +33,8 @@ public class Application {
             JSONArray coordinates = (JSONArray)geometry.get("coordinates");
             System.out.println("\t  - " + ((JSONArray)coordinates.get(0)).size() + " coordinates");
         } else {
-
+            JSONArray coordinates = (JSONArray)geometry.get("coordinates");
+            coordinates.forEach((array) -> System.out.println("\t  - " + ((JSONArray)((JSONArray)array).get(0)).size() + " coordinates"));
         }
     }
 }
