@@ -2,6 +2,7 @@ import java.io.*;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
+import org.jdom2.Namespace;
 import org.jdom2.input.SAXBuilder;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
@@ -19,7 +20,8 @@ public class Application {
         try (FileReader reader = new FileReader(FILE)) {
             // KML
             Document document = new Document();
-            Element kml = new Element("kml");//.setAttribute("xmlns", "http://www.opengis.net/kml/2.2");
+            Element kml = new Element("kml");
+            kml.setNamespace(Namespace.getNamespace("http://www.opengis.net/kml/2.2"));
 
             // JSON
             Object obj = jsonParser.parse(reader);
@@ -52,6 +54,8 @@ public class Application {
         // JSON
         JSONObject properties = (JSONObject) feature.get("properties");
         JSONObject geometry = (JSONObject) feature.get("geometry");
+
+        placemark.addContent(new Element("name").setText(properties.get("ADMIN").toString()));
 
         // Adding fullname of the land
         Element data = new Element("Data").setAttribute("name", "ADMIN");
