@@ -28,6 +28,13 @@ public class Application {
             JSONObject geojson = (JSONObject) obj;
 
             Element doc = new Element("Document");
+            Element style = new Element("Style").setAttribute("id", "borderColor");
+            Element polyStyle = new Element("PolyStyle");
+
+            polyStyle.addContent(new Element("fill").setText("0"));
+            polyStyle.addContent(new Element("outline").setText("1"));
+            style.addContent(polyStyle);
+            doc.addContent(style);
 
             JSONArray features = (JSONArray) geojson.get("features");
 
@@ -49,6 +56,7 @@ public class Application {
     private static Element parseFeaturesArray(JSONObject feature) {
         // KML
         Element placemark = new Element("Placemark");
+        placemark.addContent(new Element("styleUrl").setText("#borderColor"));
         Element extendedData = new Element("ExtendedData");
 
         // JSON
@@ -88,7 +96,7 @@ public class Application {
         } else {
             JSONArray coordinates = (JSONArray)geometry.get("coordinates");
             Element multiGeometry = new Element("MultiGeometry");
-            coordinates.forEach((arrays) -> {
+            coordinates.forEach(arrays -> {
                 System.out.println("\t  - " + ((JSONArray)((JSONArray)arrays).get(0)).size() + " coordinates");
 
                 Element polygon = new Element("Polygon");
